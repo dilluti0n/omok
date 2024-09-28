@@ -1,7 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include "board.h"
+#include "util.h"
 
 static char board[MAXBOARD][MAXBOARD];
 
@@ -9,17 +11,17 @@ static void win(char pind)
 {
 	printboard();
 	printf("%c win", pind);
-	exit(0);
+	finish_game(0);
 }
 
-void init_game()
+void init_board()
 {
 	memset(board, '+', sizeof(board));
 }
 
 void printboard()
 {
-	printf("\033[H\033[2J");
+	printf("\033[H\033[2J"); /* clear */
 	printf(" ");
 	int i;
 	for (i = 0; i < MAXBOARD; i++)

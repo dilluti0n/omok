@@ -1,7 +1,8 @@
 #include "board.h"
 #include "util.h"
 
-int main() {
+int main()
+{
 	init_game();
 
 	while (1) {
