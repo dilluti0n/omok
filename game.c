@@ -1,3 +1,4 @@
+#include "game.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <termios.h>
@@ -6,7 +7,7 @@
 
 struct termios oldterm;
 
-void init_game()
+void game_init()
 {
 	struct termios term;
 	tcgetattr(STDIN_FILENO, &oldterm);
@@ -15,10 +16,18 @@ void init_game()
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	printf("\e[?25l");	/* hide cursor */
 	Signal(SIGINT, sigint_handler);
-	init_board();
+	board_init();
 }
 
-void finish_game(int exitcode)
+void game_win(char pind)
+{
+	printf("\033[H\033[2J"); /* clear */
+	printf("%c win\n", pind);
+	board_print();
+	game_finish(0);
+}
+
+void game_finish(int exitcode)
 {
 	tcsetattr(STDIN_FILENO, TCSANOW, &oldterm);
 	write(STDOUT_FILENO, "\e[?25h", sizeof("\e[?25h") - 1);

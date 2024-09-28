@@ -1,7 +1,8 @@
 #ifndef GAME_H
 #define GAME_H
 
-void init_game();
-void finish_game(int exitcode);
+void game_init();
+void game_win(char pind);
+void game_finish(int exitcode);
 
 #endif

@@ -15,11 +15,11 @@ void input(char pind, int *x, int *y)
 		for (int i = 1; i < MAXBOARD; i++)
 			printf("__");
 		printf("_\n");
-		renderboard(vx, vy);
+		board_render(vx, vy);
 		for (int i = 1; i < MAXBOARD; i++)
 			printf("--");
 		printf("- [");
-		if (valueofboard(vx, vy) != '+') {
+		if (board_value(vx, vy) != '+') {
 			cannot_place = 1;
 			printf("Cannot place it there");
 		}
@@ -94,7 +94,7 @@ void sigint_handler(int sig)
 {
 	write(STDOUT_FILENO, "\ninturrupt by user\n",
 	      sizeof("\ninturrupt by user\n") - 1);
-	finish_game(1);
+	game_finish(1);
 }
 
 /* wrapper for sigaction */
