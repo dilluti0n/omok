@@ -1,17 +1,17 @@
-omok: main.o util.o board.o
-	g++ -o omok main.o util.o board.o
+CC=gcc
+OBJECT=omok
 
-main.o: main.cpp board.h util.h
-	g++ -c main.cpp
+$(OBJECT): main.o util.o board.o
+	$(CC) -o omok main.o util.o board.o
 
-board.o: board.cpp board.h
-	g++ -c board.cpp
+main.o: main.c board.h util.h
+	$(CC) -c main.c
 
-util.o: util.cpp board.h
-	g++ -c util.cpp
+board.o: board.c board.h
+	$(CC) -c board.c
+
+util.o: util.c board.h
+	$(CC) -c util.c
 
 clean:
-	rm -rf *.o omok w4_lab2_problem2.zip
-
-eval: clean
-	zip w4_lab2_problem2.zip ./*
+	rm -rf *.o $(OBJECT)

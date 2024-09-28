@@ -1,44 +1,47 @@
-#include <iostream>
-#include <cstring>
-#include <cstdlib>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "board.h"
-
-#define MAXBOARD 10
 
 static char board[MAXBOARD][MAXBOARD];
 
-using namespace std;
-
-static void win(char pind) {
+static void win(char pind)
+{
 	printboard();
-	cout << pind << " win" << endl;
+	printf("%c win", pind);
 	exit(0);
 }
 
-void init_game() {
+void init_game()
+{
 	memset(board, '+', sizeof(board));
 }
 
-void printboard() {
-	cout << "\033[H\033[2J";
-	cout << ' ';
+void printboard()
+{
+	printf("\033[H\033[2J");
+	printf(" ");
 	int i;
 	for (i = 0; i < MAXBOARD; i++)
-		cout << ' ' << i;
-	cout << endl;
+		printf(" %d", i);
+	printf("\n");
 	for (i = 0; i < MAXBOARD; i++) {
 		int j;
-		cout << i << ' ';
+		printf("%d ", i);
 		for (j = 0; j < MAXBOARD; j++)
-			cout << board[i][j] << ' ';
-		cout << endl;
+			printf("%c ", board[i][j]);
+		printf("\n");
 	}
-	cout << endl;
+	printf("\n");
 }
 
-int valueofboard(int x, int y) { return board[y][x]; }
+int valueofboard(int x, int y)
+{
+	return board[y][x];
+}
 
-void move_and_eval(char pind, int x, int y) {
+void move_and_eval(char pind, int x, int y)
+{
 	if (x > MAXBOARD - 1 || y > MAXBOARD - 1 || x < 0 || y < 0)
 		return;
 

@@ -9,7 +9,7 @@ int main() {
 		char pind = toggle('O', 'X');
 
 		printboard();
-		input(pind, x, y);
+		input(pind, &x, &y);
 		move_and_eval(pind, x, y);
 	}
 }
