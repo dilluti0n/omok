@@ -1,5 +1,6 @@
 #include "board.h"
 #include "util.h"
+#include "game.h"
 
 int main()
 {
