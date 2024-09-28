@@ -1,0 +1,5 @@
+*.o
+omok
+*.tar
+*.tar.gz
+.github/*
