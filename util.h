@@ -7,11 +7,15 @@ typedef void handler_t(int);
 
 enum key {
 	UNDEF = 0,
-	UP,
-	DOWN,
-	RIGHT,
-	LEFT,
-	RET,
+	KEY_UP,
+	KEY_DOWN,
+	KEY_RIGHT,
+	KEY_LEFT,
+	KEY_W,
+	KEY_S,
+	KEY_A,
+	KEY_D,
+	KEY_RET,
 };
 
 void input(char pind, int *x, int *y);

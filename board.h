@@ -5,8 +5,8 @@
 
 void board_init();
 void board_print();
-void board_render(int x, int y);
-int board_value(int x, int y);
+void board_render(char cursor, int x, int y);
+int board_isoccupied(int x, int y);
 void board_store(char pind, int x, int y);
 int board_iswin(char pind, int x, int y);
 

@@ -2,13 +2,14 @@
 #include <string.h>
 #include <unistd.h>
 #include "board.h"
-#include "game.h"
+
+#define BOARD_DEFAULT_INDICATOR '+'
 
 static char board[MAXBOARD][MAXBOARD];
 
 void board_init()
 {
-	memset(board, '+', sizeof(board));
+	memset(board, BOARD_DEFAULT_INDICATOR, sizeof(board));
 }
 
 void board_print()
@@ -20,18 +21,18 @@ void board_print()
 	}
 }
 
-void board_render(int x, int y)
+void board_render(char cursor, int x, int y)
 {
 	for (int i = 0; i < MAXBOARD; i++) {
 		for (int j = 0; j < MAXBOARD; j++)
-			printf("%c ", (i == x && j == y)? '#' : board[i][j]);
+			printf("%c ", (i == x && j == y)? cursor : board[i][j]);
 		printf("\n");
 	}
 }
 
-int board_value(int x, int y)
+int board_isoccupied(int x, int y)
 {
-	return board[x][y];
+	return board[x][y] != BOARD_DEFAULT_INDICATOR;
 }
 
 void board_store(char pind, int x, int y)
