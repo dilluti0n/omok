@@ -34,6 +34,7 @@ void game_turn()
 	struct game_context turn;
 
 	turn.pind = toggle('O', 'X');
+	turn.ismoved = 0;
 
 	char *occupied[] = {"Cannot place it there", NULL};
 
@@ -48,7 +49,7 @@ void game_turn()
 		enum key keycode;
 		if ((keycode = io_readkey()) != KEY_UNDEF)
 			keymap_func(keycode)(&turn);
-		if (cursor_ismoved())
+		if (turn.ismoved)
 			break;
 	}
 	board_store(&turn);

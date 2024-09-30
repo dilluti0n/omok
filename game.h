@@ -2,7 +2,10 @@
 #define GAME_H
 
 struct game_context {
-	int x, y, cannot_place, pind;
+	int pind;
+	int x, y;
+	int cannot_place;
+	int ismoved;
 };
 
 void game_init();

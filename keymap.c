@@ -49,7 +49,7 @@ void rightfunc(struct game_context *context)
 void retfunc(struct game_context *context)
 {
 	if (!context->cannot_place)
-		cursor_move();
+		context->ismoved = 1;
 }
 
 static char *keyname[] = {

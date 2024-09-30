@@ -11,14 +11,12 @@
 
 struct cursor {
 	int x, y;
-	int ismoved;
 } static cursor;
 
 void cursor_init()
 {
 	cursor.x = X_DEFAULT;
 	cursor.y = Y_DEFAULT;
-	cursor.ismoved = 0;
 }
 
 void cursor_diff_set(int dx, int dy)
@@ -39,14 +37,4 @@ void cursor_update(struct game_context *context)
 {
 	context->x = cursor.x;
 	context->y = cursor.y;
-}
-
-void cursor_move()
-{
-	cursor.ismoved = 1;
-}
-
-int cursor_ismoved()
-{
-	return cursor.ismoved;
 }

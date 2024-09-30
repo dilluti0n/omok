@@ -7,7 +7,5 @@ void cursor_init();
 void cursor_diff_set(int dx, int dy);
 int cursor_set(int x, int y);
 void cursor_update(struct game_context *context);
-void cursor_move();
-int cursor_ismoved();
 
 #endif
