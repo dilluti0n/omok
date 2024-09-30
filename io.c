@@ -41,14 +41,14 @@ enum key io_readkey()
 	}
 }
 
-void io_render_inputp(char pind, char cursor, int cx, int cy, char **msgs)
+void io_render_inputp(struct game_context *p, char cursor, char **msgs)
 {
 	printf("\033[H\033[2J"); /* clear */
-	printf("\t\t%c's turn\n", pind);
+	printf("\t\t%c's turn\n", p->pind);
 	for (int i = 1; i < MAXBOARD; i++)
 		printf("__");
 	printf("_\n");
-	board_render(cursor, cx, cy);
+	board_render(p, cursor);
 	for (int i = 1; i < MAXBOARD; i++)
 		printf("--");
 	printf("-\n[");
@@ -56,7 +56,7 @@ void io_render_inputp(char pind, char cursor, int cx, int cy, char **msgs)
 		printf("%s\n", *msgs++);
 	printf("]");
 #ifdef DEBUG
-	printf("vx: %d vy: %d\nvalueofboard: %c\n",
-	       vx, vy, valueofboard(vx, vy));
+	printf("x: %d y: %d\nvalueofboard: %c\n",
+	       p->x, p->y, valueofboard(p->x, p->y));
 #endif
 }

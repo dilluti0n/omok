@@ -1,4 +1,5 @@
 #include "board.h"
+#include "game.h"
 #include "cursor.h"
 
 #define X_MIN 0
@@ -34,10 +35,10 @@ int cursor_set(int x, int y)
 	return 0;
 }
 
-void cursor_update(int *x, int *y)
+void cursor_update(struct game_context *context)
 {
-	*x = cursor.x;
-	*y = cursor.y;
+	context->x = cursor.x;
+	context->y = cursor.y;
 }
 
 void cursor_move()

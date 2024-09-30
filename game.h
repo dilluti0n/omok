@@ -7,7 +7,7 @@ struct game_context {
 
 void game_init();
 void game_turn();
-void game_win(char pind);
+void game_win(struct game_context *context);
 void game_finish(int exitcode);
 
 #endif

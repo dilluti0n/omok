@@ -40,9 +40,9 @@ void game_turn()
 	for (;;) {
 		char cmd[MAXLINE];
 
-		cursor_update(&turn.x, &turn.y);
-		turn.cannot_place = board_isoccupied(turn.x, turn.y);
-		io_render_inputp(turn.pind, '#', turn.x, turn.y,
+		cursor_update(&turn);
+		turn.cannot_place = board_isoccupied(&turn);
+		io_render_inputp(&turn, '#',
 				 turn.cannot_place? occupied : NULL);
 		enum key keycode;
 		if ((keycode = io_readkey()) != KEY_UNDEF) {
@@ -52,15 +52,15 @@ void game_turn()
 		if (cursor_ismoved())
 			break;
 	}
-	board_store(turn.pind, turn.x, turn.y);
-	if (board_iswin(turn.pind, turn.x, turn.y))
-		game_win(turn.pind);
+	board_store(&turn);
+	if (board_iswin(&turn))
+		game_win(&turn);
 }
 
-void game_win(char pind)
+void game_win(struct game_context *context)
 {
 	printf("\033[H\033[2J"); /* clear */
-	printf("%c win\n", pind);
+	printf("%c win\n", context->pind);
 	board_print();
 	game_finish(0);
 }
