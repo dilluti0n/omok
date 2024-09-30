@@ -4,10 +4,10 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <termios.h>
+#include "keymap.h"
 #include "util.h"
 #include "board.h"
 #include "io.h"
-#include "console.h"
 #include "cursor.h"
 
 #define MAXLINE 255
@@ -25,6 +25,7 @@ void game_init()
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 	printf("\e[?25l");	/* hide cursor */
 	Signal(SIGINT, sigint_handler);
+	Signal(SIGSEGV, sigsegv_handler);
 	board_init();
 }
 
@@ -45,10 +46,8 @@ void game_turn()
 		io_render_inputp(&turn, '#',
 				 turn.cannot_place? occupied : NULL);
 		enum key keycode;
-		if ((keycode = io_readkey()) != KEY_UNDEF) {
-			sprintf(cmd, "press %d", keycode);
-			console_execline(cmd, &turn);
-		}
+		if ((keycode = io_readkey()) != KEY_UNDEF)
+			keymap_func(keycode)(&turn);
 		if (cursor_ismoved())
 			break;
 	}

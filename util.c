@@ -2,10 +2,8 @@
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
-#include "board.h"
 #include "util.h"
 #include "game.h"
-#include "keymap.h"
 
 int toggle(int first, int second)
 {
@@ -19,6 +17,13 @@ void sigint_handler(int sig)
 	write(STDOUT_FILENO, "\ninturrupt by user\n",
 	      sizeof("\ninturrupt by user\n") - 1);
 	game_finish(1);
+}
+
+void sigsegv_handler(int sig)
+{
+	write(STDOUT_FILENO, "\nSegment fault\n",
+	      sizeof("\nSegment fault\n") - 1);
+	game_finish(2);
 }
 
 /* wrapper for sigaction */
