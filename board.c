@@ -25,53 +25,64 @@ void board_render(struct game_context *p, char cursor)
 {
 	for (int i = 0; i < MAXBOARD; i++) {
 		for (int j = 0; j < MAXBOARD; j++)
-			printf("%c ", (i == p->x && j == p->y)? cursor : board[i][j]);
+			printf("%c ",
+			       (i == p->xpos &&
+				j == p->ypos)? cursor : board[i][j]);
 		printf("\n");
 	}
 }
 
 int board_isoccupied(struct game_context *p)
 {
-	return board[p->x][p->y] != BOARD_DEFAULT_INDICATOR;
+	return board[p->xpos][p->ypos] != BOARD_DEFAULT_INDICATOR;
 }
 
 void board_store(struct game_context *p)
 {
-	if (p->x > MAXBOARD - 1 || p->y > MAXBOARD - 1 || p->x < 0 || p->y < 0)
+	if (p->xpos > MAXBOARD - 1 || p->ypos > MAXBOARD - 1 || p->xpos < 0 || p->ypos < 0)
 		return;
 
-	board[p->x][p->y] = p->pind;
+	board[p->xpos][p->ypos] = p->pind;
 }
 
-int board_iswin(struct game_context *p)
+int board_count_continuous(struct game_context *p, enum direction direction)
 {
-	int i, j, cnt = 0;
-	for (i = p->y; i < MAXBOARD && board[p->x][i] == p->pind; i++)
-		cnt++;
-	for (i = p->y - 1; i >= 0 && board[p->x][i] == p->pind; i--)
-		cnt++;
-	if (cnt >= 5)
-		return 1;
-	cnt = 0;
-	for (j = p->x; j < MAXBOARD && board[j][p->y] == p->pind; j++)
-		cnt++;
-	for (j = p->x - 1; j >= 0 && board[j][p->y] == p->pind; j--)
-		cnt++;
-	if (cnt >= 5)
-		return 1;
-	cnt = 0;
-	for (i = p->x, j = p->y; j < MAXBOARD && i < MAXBOARD && board[i][j] == p->pind; i++, j++)
-		cnt++;
-	for (i = p->x - 1, j = p->y - 1; j >= 0 && i >= 0 && board[i][j] == p->pind; i--, j--)
-		cnt++;
-	if (cnt >= 5)
-		return 1;
-	cnt = 0;
-	for (i = p->x, j = p->y; j < MAXBOARD && i >= 0 && board[i][j] == p->pind; i--, j++)
-		cnt++;
-	for (i = p->x - 1, j = p->y - 1; j >= 0 && i >= 0 && board[i][j] == p->pind; i++, j--)
-		cnt++;
-	if (cnt >= 5)
-		return 1;
-	return 0;
+	int cnt = 0;
+
+	int i, j;
+
+	switch (direction) {
+	case HORIZONTAL:
+		for (j = p->xpos; j < MAXBOARD && board[j][p->ypos] == p->pind; j++)
+			cnt++;
+		for (j = p->xpos - 1; j >= 0 && board[j][p->ypos] == p->pind; j--)
+			cnt++;
+		return cnt;
+	case VERTICAL:
+		for (i = p->ypos; i < MAXBOARD && board[p->xpos][i] == p->pind; i++)
+			cnt++;
+		for (i = p->ypos - 1; i >= 0 && board[p->xpos][i] == p->pind; i--)
+			cnt++;
+		return cnt;
+	case SLASH:
+		for (i = p->xpos, j = p->ypos;
+		     j < MAXBOARD && i >= 0 && board[i][j] == p->pind;
+		     i--, j++)
+			cnt++;
+		for (i = p->xpos + 1, j = p->ypos - 1;
+		     j >= 0 && i >= 0 && board[i][j] == p->pind;
+		     i++, j--)
+			cnt++;
+		return cnt;
+	case BACKSLASH:
+		for (i = p->xpos, j = p->ypos;
+		     j < MAXBOARD && i < MAXBOARD && board[i][j] == p->pind;
+		     i++, j++)
+			cnt++;
+		for (i = p->xpos - 1, j = p->ypos - 1;
+		     j >= 0 && i >= 0 && board[i][j] == p->pind;
+		     i--, j--)
+			cnt++;
+		return cnt;
+	}
 }

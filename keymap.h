@@ -12,6 +12,7 @@ enum key {
 	KEY_S,
 	KEY_A,
 	KEY_D,
+	KEY_1,
 	KEY_RET,
 	KEY_UNDEF,
 };

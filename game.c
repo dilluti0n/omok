@@ -23,43 +23,60 @@ void game_init()
 	term = oldterm;
 	term.c_lflag &= ~(ICANON | ECHO);
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
-	printf("\e[?25l");	/* hide cursor */
+	printf(ASCII_HIDE_CURSOR);
 	Signal(SIGINT, sigint_handler);
 	Signal(SIGSEGV, sigsegv_handler);
 	board_init();
 }
 
+void game_start()
+{
+	io_print_startup();
+	while (io_readkey() != KEY_1)
+		;
+}
+
 void game_turn()
 {
 	struct game_context turn;
+	const char *msg_occupied = "Cannot place it there";
+	const char *msg[] = {msg_occupied, NULL};
 
 	turn.pind = toggle('O', 'X');
-	turn.ismoved = 0;
-
-	char *occupied[] = {"Cannot place it there", NULL};
-
 	cursor_init();
 	for (;;) {
-		char cmd[MAXLINE];
-
+		turn.flag = 0;
 		cursor_update(&turn);
-		turn.cannot_place = board_isoccupied(&turn);
+		if (board_isoccupied(&turn))
+			turn.flag |= GC_FLAG_CANNOT_PLACE;
 		io_render_inputp(&turn, '#',
-				 turn.cannot_place? occupied : NULL);
+				 GC_CANNOT_PLACE(turn.flag)? msg : NULL);
 		enum key keycode;
 		if ((keycode = io_readkey()) != KEY_UNDEF)
 			keymap_func(keycode)(&turn);
-		if (turn.ismoved)
+		if (GC_ISMOVED(turn.flag))
 			break;
 	}
+
 	board_store(&turn);
-	if (board_iswin(&turn))
+
+	if (game_iswin(&turn))
 		game_win(&turn);
+}
+
+int game_iswin(struct game_context *context)
+{
+	if (board_count_continuous(context, VERTICAL) >= 5 ||
+	    board_count_continuous(context, HORIZONTAL) >= 5 ||
+	    board_count_continuous(context, SLASH) >= 5 ||
+	    board_count_continuous(context, BACKSLASH) >= 5)
+		return 1;
+	return 0;
 }
 
 void game_win(struct game_context *context)
 {
-	printf("\033[H\033[2J"); /* clear */
+	printf(ASCII_CLEAR);
 	printf("%c win\n", context->pind);
 	board_print();
 	game_finish(0);

@@ -48,8 +48,8 @@ void rightfunc(struct game_context *context)
 
 void retfunc(struct game_context *context)
 {
-	if (!context->cannot_place)
-		context->ismoved = 1;
+	if (!GC_CANNOT_PLACE(context->flag))
+		context->flag |= GC_FLAG_ISMOVED;
 }
 
 static char *keyname[] = {

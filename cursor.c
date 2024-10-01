@@ -35,6 +35,6 @@ int cursor_set(int x, int y)
 
 void cursor_update(struct game_context *context)
 {
-	context->x = cursor.x;
-	context->y = cursor.y;
+	context->xpos = cursor.x;
+	context->ypos = cursor.y;
 }
